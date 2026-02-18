@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mobile Security Breach</title>
+
+<style>
+body{
+    margin:0;
+    background:black;
+    color:#00ff00;
+    font-family:monospace;
+    font-size: 10%;
+    overflow:hidden;
+}
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+#startScreen{
+    position:fixed;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    background:black;
+    color:#00ff00;
+    font-size:20px;
+}
+#terminal{
+    padding:15px;
+    font-size:12px;
+    height:60vh;
+    overflow-y:auto;
+    display:none;
+}
+#popup{
+    display:none;
+    position:fixed;
+    top:30%;
+    left:50%;
+    transform:translateX(-50%);
+    background:black;
+    border:2px solid red;
+    padding:15px;
+    color:red;
+    text-align:center;
+}
+#progressBox{
+    width:90%;
+    margin:10px auto;
+    border:1px solid #00ff00;
+    height:20px;
+    display:none;
+}
+#progressBar{
+    height:100%;
+    width:0%;
+    background:#00ff00;
+}
+#exitBtn{
+    display:none;
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:12px 25px;
+    background:red;
+    color:white;
+    border:none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="startScreen" onclick="startHack()">
+📱 TAP TO SHOW MORE SAMEER ART
+</div>
+
+<canvas id="matrix"></canvas>
+<div id="terminal"></div>
+
+<div id="popup">
+⚠ CAMERA ACCESS GRANTED ⚠<br>
+Capturing front camera...
+</div>
+
+<div id="progressBox"><div id="progressBar"></div></div>
+<button id="exitBtn" onclick="endPrank()">EXIT SYSTEM</button>
+
+<script>
+
+// MATRIX
+let canvas=document.getElementById("matrix");
+let ctx=canvas.getContext("2d");
+canvas.height=window.innerHeight;
+canvas.width=window.innerWidth;
+let letters="01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+letters=letters.split("");
+let fontSize=14;
+let columns=canvas.width/fontSize;
+let drops=[];
+for(let x=0;x<columns;x++) drops[x]=1;
+function draw(){
+    ctx.fillStyle="rgba(0,0,0,0.05)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#0F0";
+    ctx.font=fontSize+"px monospace";
+    for(let i=0;i<drops.length;i++){
+        let text=letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+        if(drops[i]*fontSize>canvas.height&&Math.random()>0.975)
+            drops[i]=0;
+        drops[i]++;
+    }
+}
+setInterval(draw,33);
+
+// SIREN SOUND
+let audioCtx;
+function playSiren(){
+    audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    let oscillator = audioCtx.createOscillator();
+    let gainNode = audioCtx.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.type="sawtooth";
+    oscillator.frequency.setValueAtTime(600,audioCtx.currentTime);
+    oscillator.frequency.linearRampToValueAtTime(1200,audioCtx.currentTime+1);
+    gainNode.gain.setValueAtTime(0.3,audioCtx.currentTime);
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime+2);
+}
+
+// VOICE
+function speak(text){
+    let msg=new SpeechSynthesisUtterance(text);
+    msg.rate=0.85;
+    msg.pitch=0.4;
+    speechSynthesis.speak(msg);
+}
+
+// PHASES
+const lines=[
+"YOUR PHONE HACKED BY SAMEER...",
+"Initializing quantum breach...",
+"Scanning encrypted storage...",
+"Detecting hidden partitions...",
+"Injecting exploit module...",
+"Bypassing firewall layer 1...",
+"Bypassing firewall layer 2...",
+"Bypassing firewall layer 3...",
+"Root access granted...",
+"Escalating privileges...",
+"Mapping file system...",
+"Locating secure vault...",
+"Decrypting media storage...",
+"Extracting gallery images...",
+"Extracting hidden videos...",
+"Reading WhatsApp database...",
+"Decrypting private chats...",
+"Extracting saved passwords...",
+"Scanning browser history...",
+"Reading autofill credentials...",
+"Accessing SMS logs...",
+"Tracking GPS coordinates...",
+"Uploading contact list...",
+"Cloning SIM data...",
+"Camera override enabled...",
+"Capturing live feed...",
+"Microphone override enabled...",
+"Recording ambient audio...",
+"Scanning banking applications...",
+"Extracting transaction history...",
+"Generating AES encryption key...",
+"Encrypting local media files...",
+"Injecting remote shell...",
+"Establishing dark server tunnel...",
+"Uploading sensitive files...",
+"Injecting persistent backdoor...",
+"Disabling security patches...",
+"Overriding device permissions...",
+"Scanning cloud backups...",
+"Syncing remote exploit...",
+"Corrupting kernel memory...",
+"Injecting trojan payload...",
+"Spawning background process...",
+"Compromising system registry...",
+"Deploying ransomware protocol...",
+"Encrypting personal documents...",
+"Marking system as compromised...",
+"Final exploit executing...",
+"Preparing data wipe sequence...",
+"Self destruct protocol armed...",
+"Final data upload 10%...",
+"Final data upload 30%...",
+"Final data upload 60%...",
+"Final data upload 90%...",
+"Final data upload complete..."
+];
+
+let i=0,j=0;
+let terminal=document.getElementById("terminal");
+let popup=document.getElementById("popup");
+let progressBox=document.getElementById("progressBox");
+let progressBar=document.getElementById("progressBar");
+let exitBtn=document.getElementById("exitBtn");
+
+function startHack(){
+    document.getElementById("startScreen").style.display="none";
+    terminal.style.display="block";
+    speak("Mobile security breach initiated.");
+    if(navigator.vibrate) navigator.vibrate([300,100,300,100,500]);
+    typeLine();
+}
+
+function typeLine(){
+    if(i<lines.length){
+        if(j<lines[i].length){
+            terminal.innerHTML+=lines[i].charAt(j);
+            j++;
+            setTimeout(typeLine,30);
+        }else{
+            terminal.innerHTML+="<br>";
+            terminal.scrollTop=terminal.scrollHeight;
+            speak(lines[i]);
+            j=0;
+            i++;
+            setTimeout(typeLine,400);
+        }
+    }else{
+        triggerCamera();
+    }
+}
+
+function triggerCamera(){
+    popup.style.display="block";
+    speak("Camera access granted.");
+    playSiren();
+    if(navigator.vibrate) navigator.vibrate([500,200,500,200,700]);
+    setTimeout(()=>{
+        popup.style.display="none";
+        showProgress();
+    },4000);
+}
+
+function showProgress(){
+    progressBox.style.display="block";
+    let width=0;
+    let interval=setInterval(()=>{
+        if(width>=100){
+            clearInterval(interval);
+            redMode();
+        }else{
+            width++;
+            progressBar.style.width=width+"%";
+        }
+    },40);
+}
+
+function redMode(){
+    document.body.style.color="red";
+    terminal.innerHTML+="<br><br>⚠ TOTAL SYSTEM FAILURE ⚠";
+    speak("Total mobile system failure detected.");
+    countdown();
+}
+
+function countdown(){
+    let time=10;
+    let interval=setInterval(()=>{
+        terminal.innerHTML+="<br>Shutdown in "+time+"...";
+        terminal.scrollTop=terminal.scrollHeight;
+        time--;
+        if(time<0){
+            clearInterval(interval);
+            exitBtn.style.display="block";
+        }
+    },1000);
+}
+
+function endPrank(){
+    speak("Prank complete. Device secure.");
+    document.body.innerHTML=
+    "<h1 style='color:red;text-align:center;margin-top:30%;'>😂 PRANK COMPLETE 😂</h1>"+
+    "<p style='color:white;text-align:center;'>Phone bilkul safe hai 😎</p>";
+}
+
+</script>
+</body>
+</html>
